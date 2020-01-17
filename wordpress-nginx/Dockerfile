@@ -1,17 +1,22 @@
 FROM bitnami/wordpress-nginx:latest
 
-# install NewRelic
-ENV NEWRELIC_AGENT_VERSION php5-9.5.0.252
+RUN apt-get update && apt-get install -y \
+        html2text \
+        vim \
+        && rm -rf /var/lib/apt/lists/*
+
+# Install NewRelic
 ENV NR_INSTALL_SILENT true
 
 WORKDIR /tmp
 
-RUN curl --silent -L https://download.newrelic.com/php_agent/release/newrelic-${NEWRELIC_AGENT_VERSION}-linux.tar.gz -o newrelic-${NEWRELIC_AGENT_VERSION}-linux.tar.gz && \
-        tar xvfz newrelic-${NEWRELIC_AGENT_VERSION}-linux.tar.gz && \
-        cd "newrelic-${NEWRELIC_AGENT_VERSION}-linux" && \
+RUN export NEWRELIC_FILENAME=$(curl -L --silent https://download.newrelic.com/php_agent/release | html2text | grep linux.tar.gz | cut -d ' ' -f1) && \
+        curl --silent -L "https://download.newrelic.com/php_agent/release/${NEWRELIC_FILENAME}" -o "${NEWRELIC_FILENAME}" && \
+        tar xvfz "${NEWRELIC_FILENAME}" && \
+        cd "$(basename ${NEWRELIC_FILENAME} .tar.gz)" && \
         ./newrelic-install install && \
 	cd .. && \
-	rm -f newrelic-${NEWRELIC_AGENT_VERSION}-linux.tar.gz
+	rm -f "${NEWRELIC_FILENAME}"
 
 COPY newrelic.ini /opt/bitnami/php/conf/conf.d/newrelic.ini
 
