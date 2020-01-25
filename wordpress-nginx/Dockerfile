@@ -3,7 +3,6 @@ FROM bitnami/wordpress-nginx:latest
 RUN apt-get update && apt-get install -y \
         html2text \
         vim \
-        && install_packages imagemagick \
         && rm -rf /var/lib/apt/lists/*
 
 # Install NewRelic
