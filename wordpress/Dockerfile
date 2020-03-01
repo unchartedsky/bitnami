@@ -1,5 +1,7 @@
 FROM bitnami/wordpress:latest
 
+USER root
+
 RUN apt-get update && apt-get install -y \
         html2text \
         vim \
@@ -41,5 +43,7 @@ RUN export NEWRELIC_FILENAME=$(curl -L --silent https://download.newrelic.com/ph
 	rm -f "${NEWRELIC_FILENAME}"
 
 COPY newrelic.ini /opt/bitnami/php/conf/conf.d/newrelic.ini
+
+USER 1001
 
 WORKDIR /
