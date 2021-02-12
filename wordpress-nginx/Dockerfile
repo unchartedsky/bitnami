@@ -5,7 +5,6 @@ USER root
 RUN apt-get update && apt-get install -y \
         html2text \
         vim \
-        cron \
         && rm -rf /var/lib/apt/lists/*
 
 # Install ImageMagick PHP extension
