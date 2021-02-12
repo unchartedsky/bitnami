@@ -39,7 +39,9 @@ RUN export NEWRELIC_FILENAME=$(curl -L --silent https://download.newrelic.com/ph
         cd "$(basename ${NEWRELIC_FILENAME} .tar.gz)" && \
         ./newrelic-install install && \
 	cd .. && \
-	rm -f "${NEWRELIC_FILENAME}"
+	rm -f "${NEWRELIC_FILENAME}" && \
+  mkdir -p /var/log/newrelic && \
+  chown -R 1001 /var/log/newrelic
 
 COPY newrelic.ini /opt/bitnami/php/conf/conf.d/newrelic.ini
 
