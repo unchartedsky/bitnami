@@ -1,5 +1,7 @@
 FROM bitnami/wordpress:latest
 
+LABEL org.opencontainers.image.source https://github.com/unchartedsky/bitnami
+
 USER root
 
 RUN apt-get update && apt-get install -y \
